@@ -104,21 +104,17 @@ def main():
     elapsed_time_dft, total_operations_dft, coeffs_dft = time_and_operation_count(x, N)
     elapsed_time_fft, total_operations_fft, coeffs_fft, N_fft = time_and_operation_count_fft(x)
 
-    print("Коефіцієнти Фур'є:\n")
-    print("DFT:")
+    print("Дискретне перетворення Фур'є:")
     for i, coeff in enumerate(coeffs_dft):
         print(f"C_{i} = {coeff:.4f}")
     print(f"Час обчислення: {elapsed_time_dft:.6f} секунд")
     print(f"Всього операцій: {total_operations_dft}")
 
-    print("\n\nFFT:")
+    print("\n\nШвидке перетворення Фур'є:")
     for i, coeff in enumerate(coeffs_fft):
         print(f"C_{i} = {coeff:.4f}")
     print(f"Час обчислення: {elapsed_time_fft:.6f} секунд")
     print(f"Всього операцій: {total_operations_fft}")
-
-
-
 
     plot_spectra(coeffs_dft, N)
     plot_spectra(coeffs_fft, N_fft)
