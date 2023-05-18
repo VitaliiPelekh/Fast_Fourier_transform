@@ -53,12 +53,12 @@ def time_and_operation_count_fft(x):
     elapsed_time = time.time() - start_time
 
     # Кількість операцій множення і додавання для FFT апроксимується як N log2(N) для кожної
-    multiplication_operations = padded_N * np.log2(padded_N)
+    multiplication_operations = 4 * padded_N * np.log2(padded_N)
     addition_operations = padded_N * np.log2(padded_N)
 
     total_operations = multiplication_operations + addition_operations
 
-    return elapsed_time, int(multiplication_operations), int(addition_operations), int(total_operations), fft_result, padded_N
+    return elapsed_time, int(addition_operations), int(multiplication_operations), int(total_operations), fft_result, padded_N
 
 
 # Оцінка часу обчислення та кількості операцій ДПФ
@@ -68,7 +68,7 @@ def time_and_operation_count(x, N):
     cos_operations = N * (N - 1)
     sin_operations = N * (N - 1)
     add_operations = 2 * N * (N - 1)
-    mult_operations = 2 * N * (N - 1)
+    mult_operations = 3 * N * (N - 1)
 
     total_operations = cos_operations + sin_operations + add_operations + mult_operations
 
