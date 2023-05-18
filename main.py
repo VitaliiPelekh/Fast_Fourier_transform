@@ -52,10 +52,13 @@ def time_and_operation_count_fft(x):
 
     elapsed_time = time.time() - start_time
 
-    # Кількість операцій для FFT апроксимується як N log2(N)
-    operations = padded_N * np.log2(padded_N)
+    # Кількість операцій множення і додавання для FFT апроксимується як N log2(N) для кожної
+    multiplication_operations = padded_N * np.log2(padded_N)
+    addition_operations = padded_N * np.log2(padded_N)
 
-    return elapsed_time, int(operations), fft_result, padded_N
+    total_operations = multiplication_operations + addition_operations
+
+    return elapsed_time, int(multiplication_operations), int(addition_operations), int(total_operations), fft_result, padded_N
 
 
 # Оцінка часу обчислення та кількості операцій ДПФ
@@ -73,7 +76,7 @@ def time_and_operation_count(x, N):
 
     elapsed_time = time.time() - start_time
 
-    return elapsed_time, total_operations, coeffs
+    return elapsed_time, total_operations, coeffs, add_operations, mult_operations
 
 
 # Побудова графіків амплітудного та фазового спектрів
@@ -101,19 +104,23 @@ def main():
     np.random.seed(42)
     x = np.random.rand(N)
 
-    elapsed_time_dft, total_operations_dft, coeffs_dft = time_and_operation_count(x, N)
-    elapsed_time_fft, total_operations_fft, coeffs_fft, N_fft = time_and_operation_count_fft(x)
+    elapsed_time_dft, total_operations_dft, coeffs_dft, add_operations_dft, multi_operations_dft = time_and_operation_count(x, N)
+    elapsed_time_fft, add_operations_fft, multi_operations_fft, total_operations_fft, coeffs_fft, N_fft = time_and_operation_count_fft(x)
 
     print("Дискретне перетворення Фур'є:")
     for i, coeff in enumerate(coeffs_dft):
         print(f"C_{i} = {coeff:.4f}")
     print(f"Час обчислення: {elapsed_time_dft:.6f} секунд")
+    print(f"Операцій додавання: {add_operations_dft}")
+    print(f"Операцій множення: {multi_operations_dft}")
     print(f"Всього операцій: {total_operations_dft}")
 
     print("\n\nШвидке перетворення Фур'є:")
     for i, coeff in enumerate(coeffs_fft):
         print(f"C_{i} = {coeff:.4f}")
     print(f"Час обчислення: {elapsed_time_fft:.6f} секунд")
+    print(f"Операцій додавання: {add_operations_fft}")
+    print(f"Операцій множення: {multi_operations_fft}")
     print(f"Всього операцій: {total_operations_fft}")
 
     plot_spectra(coeffs_dft, N)
